@@ -1,0 +1,10 @@
+{
+  "name": "small",
+  "_note": "fast, decrypt-verified end to end. N=64 keeps keygen cheap.",
+  "hardware": { "cores": 130 },
+  "workload": {
+    "N": 64, "LQ": 6, "LP": 2, "dnum": 2, "ndrop": 1,
+    "ntt": [8, 8], "tile": 32, "validate": true
+  },
+  "passes": ["place_comm", "fuse_dispatches", "batch_dispatches", "select_engines", "legalize"]
+}

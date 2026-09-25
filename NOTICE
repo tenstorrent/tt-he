@@ -1,0 +1,78 @@
+tt-he
+Copyright 2026 Tenstorrent USA, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+================================================================================
+
+Documentation and other non-code content
+
+Documentation, images and other non-code content in this repository are licensed
+under the Creative Commons Attribution 4.0 International License (CC BY 4.0).
+See LICENSE-DOCS.
+
+================================================================================
+
+Third-Party Dependencies
+
+This repository vendors no third-party source code. The following separate and
+independent dependencies are required to build or run it, and each is subject to
+its own license terms:
+
+- tt-metalium (TT-Metal)
+  Tenstorrent USA, Inc.
+  Licensed under Apache 2.0
+  https://github.com/tenstorrent/tt-metal
+
+- NumPy (required only by the Python reference models under reference/)
+  Licensed under the BSD 3-Clause License
+  https://github.com/numpy/numpy
+
+- Dash and Dash Cytoscape (required only by the optional interactive
+  visualizations; see requirements-viz.txt)
+  Licensed under the MIT License
+  https://github.com/plotly/dash
+  https://github.com/plotly/dash-cytoscape
+
+- Plotly (required only by the optional trace viewer; see requirements-viz.txt)
+  Licensed under the MIT License
+  https://github.com/plotly/plotly.py
+
+================================================================================
+
+Algorithmic References
+
+The algorithms implemented here are described in published literature. These are
+citations, not vendored code — no source from any of the projects below is
+included in this repository.
+
+- CROSS: an RNS-BFV / homomorphic encryption accelerator design.
+  Parameter sets referred to as "Set B" follow this work.
+  https://github.com/EfficientPPML/CROSS
+
+- Langowski and Devadas, on CRNS base conversion.
+  IACR ePrint 2025/1068 — https://eprint.iacr.org/2025/1068
+
+- Chen and Ren, OnionPIR v2.
+  IACR ePrint 2025/1142 — https://eprint.iacr.org/2025/1142
+
+- Lattigo, a lattice-based homomorphic encryption library, consulted as an
+  implementation reference for RNS-BFV.
+  https://github.com/tuneinsight/lattigo
+
+- jaxite, Google's JAX library for homomorphic encryption on TPUs. Its CRNS
+  base conversion (jaxite_ec/finite_field_context.py) was consulted as an
+  implementation reference for reference/he/bfv_bconv_crns.py and
+  docs/ir/crns_bconv_lowering.md.
+  Licensed under Apache 2.0
+  https://github.com/google/jaxite

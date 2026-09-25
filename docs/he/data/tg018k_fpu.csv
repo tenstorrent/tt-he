@@ -1,0 +1,44 @@
+# exp_Tg018k part C — matrix-engine (FPU) FBC vs SFPU baseconv_fbc, Ls=16 sources.
+# Blackhole p150, 1350 MHz, T=8 of our 1024-coefficient tiles per core, 3 timed replays, min taken.
+# Device time = tt-metal's own per-RISC *-KERNEL zone envelope, parsed after mesh->close().
+# Every FPU row verified 0 mismatches against a host golden; every SFPU row 0 mismatches.
+# us_per_our_tile = kernel span / T, i.e. per 1024 coefficients converted Ls -> Ld.
+#
+# sweep 1: both routes vs core count, at our shape Ld=8
+route,G,Ld,us_per_our_tile,note
+fpu_matmul,1,8,42.066,
+fpu_recombine,1,8,198.277,
+fpu_total,1,8,240.343,
+sfpu_baseconv_fbc,1,8,94.551,
+fpu_matmul,4,8,42.451,
+fpu_recombine,4,8,198.289,
+fpu_total,4,8,240.740,
+sfpu_baseconv_fbc,4,8,94.927,
+fpu_matmul,16,8,92.622,plane round-trip starts costing
+fpu_recombine,16,8,198.606,
+fpu_total,16,8,291.228,
+sfpu_baseconv_fbc,16,8,97.029,
+fpu_matmul,64,8,217.183,
+fpu_recombine,64,8,212.562,
+fpu_total,64,8,429.744,
+sfpu_baseconv_fbc,64,8,103.884,
+fpu_matmul,130,8,406.516,613 MB/replay -> 188 GB/s
+fpu_recombine,130,8,362.730,681 MB/replay -> 235 GB/s = at the DRAM ceiling
+fpu_total,130,8,769.246,
+sfpu_baseconv_fbc,130,8,113.470,100 MB/replay -> 110 GB/s
+#
+# sweep 2: FPU route vs Ld at G=1 — flat, because both stages run full 32-wide tiles either way
+fpu_total,1,8,240.354,
+fpu_total,1,16,240.354,
+fpu_total,1,32,240.348,
+#
+# sweep 3: SFPU vs Ld at G=1, Ls=16 — linear.  fit 10.16 + 10.545*Ld, max residual < 0.1 us
+# (Ld > 11 does not fit the kernel's runtime-arg budget: 50 + 18*Ld <= 250)
+sfpu_baseconv_fbc,1,2,31.248,
+sfpu_baseconv_fbc,1,4,52.344,
+sfpu_baseconv_fbc,1,6,73.450,
+sfpu_baseconv_fbc,1,8,94.560,
+sfpu_baseconv_fbc,1,10,115.599,
+sfpu_baseconv_fbc,1,11,126.154,
+#
+# crossover: 10.16 + 10.545*Ld = 240.35  ->  Ld = 21.8

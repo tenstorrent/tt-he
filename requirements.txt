@@ -1,0 +1,15 @@
+# Python dependencies for the reference models / goldens (algorithm/, cpu/).
+#
+#   pip install -r requirements.txt
+#
+# Deliberately minimal: numpy is the ONLY third-party package the goldens need -- everything else
+# they import is the standard library or a module inside this repo. Python 3.10+ (3.12 tested).
+#
+# Optional extras live in requirements-viz.txt (interactive visualizations only).
+#
+# Prefer conda? Use environment.yml instead -- same single dependency:
+#     conda env create -f environment.yml && conda activate tt-he
+# NOTE: on PEP 668 distros (Ubuntu 24.04+) plain `pip install` into the system Python is refused;
+# use conda, or `pip install --user`, or your distro package (e.g. apt install python3-numpy).
+
+numpy>=1.24

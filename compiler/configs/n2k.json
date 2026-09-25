@@ -1,0 +1,10 @@
+{
+  "name": "n2k",
+  "_note": "N=2048. Past a four-step factor of 32 the weight matrices get sliced into 32x32 blocks, so there are more dispatchable matmuls than at N=1024.",
+  "hardware": { "cores": 130 },
+  "workload": {
+    "N": 2048, "LQ": 4, "LP": 2, "dnum": 2, "ndrop": 1,
+    "ntt": [32, 64], "tile": 32, "validate": false
+  },
+  "passes": ["place_comm", "fuse_dispatches", "batch_dispatches", "select_engines", "legalize"]
+}

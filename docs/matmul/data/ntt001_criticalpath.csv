@@ -1,0 +1,20 @@
+variant,seq,stage,trace_kernel_latency_us
+3f,0,A1 dec,3.133
+3f,1,A2 mm,11.970
+3f,2,A3 rec,10.129
+3f,3,B tw,5.507
+3f,4,C1 dec,2.999
+3f,5,C2 mm,14.850
+3f,6,C3 rec,10.461
+3f,7,TB tw,5.461
+3f,8,A2A,32.236
+3f,9,D1 dec,2.927
+3f,10,D2 mm,13.241
+3f,11,D3 rec,10.281
+2f,0,dec A,3.179
+2f,1,M1 mm,72.956
+2f,2,rec1,10.477
+2f,3,twiddle,5.454
+2f,4,dec S',2.976
+2f,5,M2 mm,42.488
+2f,6,rec2,10.340

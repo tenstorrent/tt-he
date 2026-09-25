@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  # The org-standard SPDX header check. Runs first and anywhere: it needs nothing but the tree.
+  # What to skip lives in .github/spdx_ignore.yaml, not here.
+  check-spdx-licenses:
+    name: SPDX headers
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check SPDX licenses
+        uses: tenstorrent/tt-github-actions/.github/actions/spdx-checker@main
+        with:
+          ignore_config_file: '.github/spdx_ignore.yaml'
+          verbose: 'true'
+
+  # Runs anywhere: no Tenstorrent hardware, no tt-metalium install. HE_HOST_ONLY skips every device
+  # target, so the project still configures, builds and runs its host-side test.
+  host:
+    name: host checks (no hardware)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build tools
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ninja-build
+
+      - name: Shell scripts are POSIX sh
+        # These are invoked as `sh tools/...` in the docs, and dash is /bin/sh on Debian/Ubuntu.
+        # A bashism here breaks the documented command for every user (it has happened: `set -o pipefail`).
+        run: |
+          fail=0
+          for f in $(git ls-files '*.sh'); do
+            dash -n "$f" || { echo "FAILED: $f"; fail=1; }
+          done
+          exit $fail
+
+      - name: Python reference models parse
+        run: python3 -m compileall -q reference compiler
+
+      # check_links / check_paths / check_divergence run below as `nohw` ctest tests, so they are
+      # not duplicated here -- one source of truth for what the host-only tier covers.
+
+      - name: Configure (host-only)
+        run: cmake -B build -G Ninja -DHE_HOST_ONLY=ON
+
+      - name: Build
+        run: cmake --build build -j"$(nproc)"
+
+      - name: Run host tests
+        run: ctest --test-dir build -L '^nohw$' --output-on-failure

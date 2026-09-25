@@ -1,0 +1,11 @@
+kernel,n_dispatches,n_sampled,mean_us,min_us,max_us,cv_pct,total_ms,pct_of_total,confidence
+a2a_corner,608,732,170.0,160.0,179.0,,103.36,43.7,ESTIMATE (see note)
+modmul_sfpi_full,2074,2415,23.4,21.4,26.8,5.5,48.53,20.5,measured
+baseconv_fbc,30,42,853.1,849.8,856.8,0.2,25.59,10.8,measured
+fused_matmul_a_acc,608,707,31.5,29.2,33.4,3.1,19.15,8.1,measured
+fused_matmul_a,608,706,20.5,19.9,21.3,0.8,12.46,5.3,measured
+fused_matmul_c,608,706,20.2,19.0,21.1,2.1,12.28,5.2,measured
+modadd_map,590,594,16.5,14.9,18.0,3.2,9.73,4.1,measured
+modsub_reduce,282,282,16.5,15.2,18.0,3.0,4.65,2.0,measured
+bconv_one,4,4,211.0,208.5,213.5,1.1,0.84,0.4,measured
+TOTAL,5412,,,,,236.61,100.0,

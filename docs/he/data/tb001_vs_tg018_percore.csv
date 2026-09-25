@@ -1,0 +1,13 @@
+kernel,tb001_disp,tb001_work_per_core,tb001_us_per_disp,tb001_us_per_work,tg018_disp,tg018_work_per_core,tg018_us_per_disp,tg018_us_per_work,per_core_ratio,tb001_source
+a2a_corner,,,,,608,32,170.4,5.325,,
+modmul_sfpi_full,190,1,14.7,14.700,2074,1,23.4,23.400,1.592,tb001
+baseconv_fbc,4,28,386.0,13.786,30,128,852.4,6.659,0.483,tb001
+fused_matmul_a_acc,57,8,35.0,4.375,608,2,31.2,15.600,3.566,tg000*
+fused_matmul_a,19,1,10.8,10.800,608,1,20.5,20.500,1.898,tb001
+fused_matmul_c,57,1,10.9,10.900,608,1,20.2,20.200,1.853,tb001
+modadd_map,65,1,2.9,2.900,590,1,16.5,16.500,5.690,tb001
+modsub_reduce,42,1,2.6,2.600,282,1,16.5,16.500,6.346,tb001
+bconv_one,4,7,7.6,1.086,4,46,212.0,4.609,4.245,tg000*
+modadd_reduce,19,1,9.1,9.100,,,,,,tb001
+transpose_tile,76,1,1.7,1.700,,,,,,tb001
+fused_matmul_c_acc,19,8,35.0,4.375,,,,,,tg000*

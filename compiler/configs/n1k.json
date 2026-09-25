@@ -1,0 +1,10 @@
+{
+  "name": "n1k",
+  "_note": "N=1024 is the smallest degree whose four-step factors reach (32,32), which is what makes the 32x32 matmuls dispatchable to matmul_modq. Small L keeps it quick.",
+  "hardware": { "cores": 130 },
+  "workload": {
+    "N": 1024, "LQ": 4, "LP": 2, "dnum": 2, "ndrop": 1,
+    "ntt": [32, 32], "tile": 32, "validate": false
+  },
+  "passes": ["place_comm", "fuse_dispatches", "batch_dispatches", "select_engines", "legalize"]
+}

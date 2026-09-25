@@ -1,0 +1,4 @@
+# two ciphertext multiplies and an add -- three statements, scheduled as one DAG.
+c = mul(a, b)
+f = mul(d, e)
+g = add(a, b)

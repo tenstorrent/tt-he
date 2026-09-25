@@ -1,0 +1,14 @@
+# OPTIONAL extras: nothing in the build, the tests or the goldens needs any of these.
+#
+#   pip install -r requirements-viz.txt
+#
+# Two independent groups, kept in one file because both are "only if you want a picture":
+#   - dash, dash-cytoscape : interactive NTT visualizations
+#                            (reference/ntt/viz.py, reference/ntt_matmul/viz.py)
+#   - plotly               : the trace viewer (tools/traces/trace_app.py). Dash pulls it in
+#                            transitively, but it is imported directly, so it is named here.
+
+-r requirements.txt
+dash>=2.16
+dash-cytoscape>=1.0
+plotly>=5.0

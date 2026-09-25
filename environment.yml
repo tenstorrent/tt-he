@@ -1,0 +1,17 @@
+# Conda environment for the reference models / goldens (algorithm/, cpu/).
+#
+#   conda env create -f environment.yml
+#   conda activate tt-he
+#
+# Then point the repo at this interpreter so every script and the doctor use it:
+#   echo "PYTHON=$(which python)" >> config.local.env
+#
+# Only numpy is required -- see requirements.txt for the pip equivalent and the reasoning.
+# Optional visualization extras (dash, dash-cytoscape) are in requirements-viz.txt.
+
+name: tt-he
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.10
+  - numpy>=1.24

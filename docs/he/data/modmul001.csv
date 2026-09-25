@@ -1,0 +1,52 @@
+# exp_modmul001: three modmul kernels, one core (0,0), q=268435399, 5 replays (min).
+# No kernel contains a profiler zone. Device us = firmware *-KERNEL envelope.
+# canon_mism vs the canonical golden; lazy_mism allows golden + q (the hybrid's contract).
+kernel,contract,T,span_us,host_ms,canon_mism,lazy_mism
+sfpi_full,canonical [0,q),1,13.5904,0.05528,0,0
+sfpi_full,canonical [0,q),2,25.8896,0.05537,0,0
+sfpi_full,canonical [0,q),4,50.8437,0.0897,0,0
+sfpi_full,canonical [0,q),8,100.569,0.141651,0,0
+sfpi_full,canonical [0,q),16,200.002,0.244971,0,0
+sfpi_full,canonical [0,q),32,398.904,0.45782,0,0
+sfpi_full,canonical [0,q),64,796.634,0.859821,0,0
+sfpi_full,canonical [0,q),128,1592.18,1.66806,0,0
+sfpi_full_bh,canonical [0,q),1,6.45037,0.09594,0,0
+sfpi_full_bh,canonical [0,q),2,11.7007,0.05801,0,0
+sfpi_full_bh,canonical [0,q),4,22.5415,0.07952,0,0
+sfpi_full_bh,canonical [0,q),8,44.0444,0.08869,0,0
+sfpi_full_bh,canonical [0,q),16,87.0393,0.13505,0,0
+sfpi_full_bh,canonical [0,q),32,173.064,0.21605,0,0
+sfpi_full_bh,canonical [0,q),64,345.058,0.391211,0,0
+sfpi_full_bh,canonical [0,q),128,689.096,0.74725,0,0
+hybrid_canon,canonical [0,q),1,6.07333,0.07163,0,0
+hybrid_canon,canonical [0,q),2,10.8696,0.06172,0,0
+hybrid_canon,canonical [0,q),4,20.8007,0.05581,0,0
+hybrid_canon,canonical [0,q),8,40.5311,0.084131,0,0
+hybrid_canon,canonical [0,q),16,79.9578,0.11498,0,0
+hybrid_canon,canonical [0,q),32,158.876,0.19431,0,0
+hybrid_canon,canonical [0,q),64,316.639,0.37034,0,0
+hybrid_canon,canonical [0,q),128,632.141,0.692441,0,0
+fused_bh,canonical [0,q),1,5.73037,0.08486,0,0
+fused_bh,canonical [0,q),2,10.2756,0.06551,0,0
+fused_bh,canonical [0,q),4,19.6644,0.07001,0,0
+fused_bh,canonical [0,q),8,38.3156,0.08609,0,0
+fused_bh,canonical [0,q),16,75.5919,0.11811,0,0
+fused_bh,canonical [0,q),32,150.144,0.190321,0,0
+fused_bh,canonical [0,q),64,299.274,0.346431,0,0
+fused_bh,canonical [0,q),128,597.499,0.646421,0,0
+fused2_bh,canonical [0,q),1,5.15037,0.06052,0,0
+fused2_bh,canonical [0,q),2,9.17704,0.06745,0,0
+fused2_bh,canonical [0,q),4,17.4311,0.05968,0,0
+fused2_bh,canonical [0,q),8,33.8185,0.08047,0,0
+fused2_bh,canonical [0,q),16,66.5393,0.10858,0,0
+fused2_bh,canonical [0,q),32,132.008,0.17383,0,0
+fused2_bh,canonical [0,q),64,262.95,0.307271,0,0
+fused2_bh,canonical [0,q),128,524.829,0.5669,0,0
+fused3_bh,canonical [0,q),1,4.12222,0.06087,0,0
+fused3_bh,canonical [0,q),2,7.12741,0.06116,0,0
+fused3_bh,canonical [0,q),4,13.3793,0.07189,0,0
+fused3_bh,canonical [0,q),8,25.7207,0.06612,0,0
+fused3_bh,canonical [0,q),16,50.4148,0.08999,0,0
+fused3_bh,canonical [0,q),32,99.8178,0.13407,0,0
+fused3_bh,canonical [0,q),64,198.578,0.23696,0,0
+fused3_bh,canonical [0,q),128,396.127,0.44454,0,0

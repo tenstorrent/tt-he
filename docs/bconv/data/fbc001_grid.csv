@@ -1,0 +1,14 @@
+# exp_Tg018r: SFPU vs matrix-engine FBC, equal footing. N=65536, G=64, T=1 our-tile(s)/core, 3 replays (min).
+# Device us = per-RISC *-KERNEL zone envelope for ONE conversion of all N coefficients.
+# FPU total = scale + fused(transpose-in, decompose, matmul, recombine, transpose-out).
+# Both routes verified against the same host golden; mism = differing outputs.
+ls,ld,sfpu_us,fpu_scale_us,fpu_main_us,fpu_total_us,ratio,sfpu_mism,fpu_mism,sfpu_host_ms,fpu_host_ms
+8,8,397.547,0,440.823,440.823,1.10886,0,0,0.465511,0.507562
+8,16,748.26,0,441.49,441.49,0.590022,0,0,0.821173,0.506592
+8,32,1447.69,0,442.346,442.346,0.305552,0,0,1.52462,0.508992
+16,8,788.084,0,444.239,444.239,0.563696,0,0,0.864063,0.507432
+16,16,1476.49,0,444.127,444.127,0.300798,0,0,1.55802,0.509912
+16,32,2854.01,0,445.41,445.41,0.156065,0,0,2.94809,0.521422
+32,8,1563.74,0,457.036,457.036,0.292272,0,0,1.65348,0.523782
+32,16,2929.06,0,457.196,457.196,0.15609,0,0,3.01489,0.523292
+32,32,5659.43,0,457.331,457.331,0.0808087,0,0,5.75604,0.524992

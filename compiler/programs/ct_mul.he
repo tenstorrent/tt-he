@@ -1,0 +1,6 @@
+# ct_mul.he -- a high-level HE program.
+#   <result> = <op>(<args>)      ops: mul (tensor -> relin -> add -> rescale), add
+# Each statement is compiled to the RNS primitive graph and the statements are scheduled together
+# as one DAG, so a multi-statement program is a real batch of independent HE work.
+
+c = mul(a, b)

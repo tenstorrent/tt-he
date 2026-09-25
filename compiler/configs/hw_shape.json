@@ -1,0 +1,10 @@
+{
+  "name": "hw_shape",
+  "_note": "the measured pipeline's PARAMETERS (L_Q=48, P=16, dnum=3) at N=1024. Its N is 2^16; the op graph is N-independent so the structure and every mapping decision match.",
+  "hardware": { "cores": 130 },
+  "workload": {
+    "N": 1024, "LQ": 48, "LP": 16, "dnum": 3, "ndrop": 1,
+    "ntt": [32, 32], "tile": 32, "validate": false
+  },
+  "passes": ["place_comm", "fuse_dispatches", "batch_dispatches", "select_engines", "legalize"]
+}

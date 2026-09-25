@@ -1,0 +1,27 @@
+# exp_modmul002: Barrett vs Montgomery, one core, q=268435399, mu=268435513
+# Each kernel checked against its OWN golden: montgomery a*b*R^-1 mod q, barrett a*b mod q.
+kernel,computes,T,ms,mismatches
+montgomery_1pass,a*b*R^-1 mod q,1,0.05224,0
+montgomery_1pass,a*b*R^-1 mod q,2,0.05156,0
+montgomery_1pass,a*b*R^-1 mod q,4,0.05523,0
+montgomery_1pass,a*b*R^-1 mod q,8,0.05712,0
+montgomery_1pass,a*b*R^-1 mod q,16,0.08012,0
+montgomery_1pass,a*b*R^-1 mod q,32,0.1389,0
+montgomery_1pass,a*b*R^-1 mod q,64,0.242951,0
+montgomery_1pass,a*b*R^-1 mod q,128,0.457231,0
+barrett_1pass,a*b      mod q,1,0.05167,0
+barrett_1pass,a*b      mod q,2,0.05459,0
+barrett_1pass,a*b      mod q,4,0.05885,0
+barrett_1pass,a*b      mod q,8,0.06208,0
+barrett_1pass,a*b      mod q,16,0.08757,0
+barrett_1pass,a*b      mod q,32,0.157831,0
+barrett_1pass,a*b      mod q,64,0.25391,0
+barrett_1pass,a*b      mod q,128,0.480251,0
+barrett_1sub,a*b      mod q,1,0.06384,0
+barrett_1sub,a*b      mod q,2,0.05454,0
+barrett_1sub,a*b      mod q,4,0.06584,0
+barrett_1sub,a*b      mod q,8,0.08088,0
+barrett_1sub,a*b      mod q,16,0.08874,0
+barrett_1sub,a*b      mod q,32,0.143511,0
+barrett_1sub,a*b      mod q,64,0.240581,0
+barrett_1sub,a*b      mod q,128,0.461251,0

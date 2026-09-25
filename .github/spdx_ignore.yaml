@@ -1,0 +1,20 @@
+# SPDX ignore patterns for the tt-he repository.
+# The standard license settings come from the centralized spdx-checker action; this file only lists
+# what to skip. Everything that is source -- .cpp, .hpp, .py, .sh, .cmake -- must carry a header.
+
+ignore:
+  perform_check: no
+  include:
+    - .github/
+    # Binary test fixtures and their generated companions: no place to put a comment.
+    # Provenance for each is in tools/gen_fixtures.sh, which records the exact generator and args.
+    - "*.bin"
+    - "*.csv"
+    - "*.json"
+    - "*.mlir"
+    - "*.html"
+    - "*.log"
+    # Build and run output, never committed but present in a working tree.
+    - build/
+    - generated/
+    - __pycache__/

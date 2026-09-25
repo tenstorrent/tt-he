@@ -1,0 +1,4 @@
+# Test fixtures (*.bin) are COMMITTED on purpose -- see tools/gen_fixtures.sh.
+# Device tests then need no Python at all; the generators here are a maintainer tool for
+# regenerating them, not a prerequisite for running the suite.
+__pycache__/

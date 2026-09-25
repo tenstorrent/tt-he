@@ -1,0 +1,15 @@
+variant,config,dispatches,crit_path_us,note
+3factor,stock,12,121.0,busy_metrics min of 3
+3factor,deep,12,110.0,deep matmul readers
+3factor,deep+bothnoc,12,101.6,+ both-NoC corner turn
+3factor,deep+bothnoc+fuse,6,65.1,+ fused dec/mm/rec triples
+2factor,stock,7,146.0,busy_metrics min of 3
+2factor,deep,7,114.0,deep matmul readers
+3factor,deep+bothnoc+fuse+exchange,6,45.5,+ core-to-core corner turn
+3factor,+mega (1 dispatch),1,34.0,whole NTT in one kernel
+2factor,+fused matmul/recombine,5,98.6,fused_matmul_k_1pass (bigK)
+3factor,per-stage DRAM-minimal + on-chip a2a,6,45.6,canonical comparison config
+2factor,per-stage DRAM-minimal,5,99.4,canonical comparison config
+2factor,+mega SRAM-resident (1 dispatch),1,62.1,two group exchanges
+3factor,+staged reader (1 dispatch),1,29.6,SRAM-resident + staged constant load
+2factor,+staged reader (1 dispatch),1,56.1,SRAM-resident + staged constant load
