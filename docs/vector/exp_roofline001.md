@@ -284,7 +284,7 @@ sits at intensity `1/12`, just under the ridge. Three consequences:
    fusing six NTT passes into one dispatch (50.863 → 32.448 ms) is exactly the move this roofline
    prescribes: it raises R without touching the arithmetic. The same document's §4e then took it to
    **23.991 ms** by moving the base conversion onto the matrix engine — which is the *other* move this
-   roofline prescribes, since the matrix engine's roof is the one Blackhole is not 38–48× behind on.
+   roofline prescribes: it takes work out from under the vector unit's modmul roof, the binding one.
 3. **`add` and `mul` are not worth optimising as kernels at all in a streaming context** — at `R=1`
    they already sit at 99.6% and 98.6% of the memory roof (`addp` at 100.0%). Their compute ceilings
    (23×, 11× and 3.4× the modmul's) are unreachable without reuse.

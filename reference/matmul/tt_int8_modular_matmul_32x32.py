@@ -4,8 +4,7 @@
 r"""TT-faithful 32x32 modular matmul  C = (A @ B) mod q  via signed-int8 tile matmul.
 
 This is the numpy oracle for the tt-metal kernel planned in
-docs/matmul/history/PLAN.md.  Unlike reference/matmul/int8_modular_matmul.py (which uses
-radix 256 / uint8), this version is written for the hardware we actually target:
+docs/matmul/history/PLAN.md, written for the hardware we actually target:
 
   * TT-metal exposes a SIGNED int8 tile matmul (32x32 int8 -> 32x32 int32).
     Signed int8 on Tensix is sign-magnitude, but every limb we produce is

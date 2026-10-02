@@ -1,9 +1,8 @@
 # PIR on Tenstorrent — primer, storage model, and per-card sizing
 
 **Purpose.** A self-contained write-up of what PIR is, why OnionPIR is the right scheme for a
-Tenstorrent accelerator, how data is actually stored and processed, and — the part that matters for
-the investment story — **how big a workload one card can realistically serve, and why capacity scales
-linearly with cards.** Written to be read start-to-finish by someone new to the project.
+Tenstorrent accelerator, how data is actually stored and processed, and **how big a workload one card
+can realistically serve, and why capacity scales linearly with cards.** Written to be read start-to-finish by someone new to the project.
 
 Companion docs (the "how it's built" detail): `history/onionpir_build_plan.md`,
 `pir_external_product_deepdive.md`, `pir_special_kernels.md`, and the measured device numbers in
@@ -221,121 +220,22 @@ dimension 33%, fold 9%, convert 6%, mod-switch ~0%.
 
 ---
 
-## 6. Real-world applications (why this matters)
+## 6. Example applications
 
-A good flagship satisfies three things at once: (a) the hot loop is the initial-dimension scan =
-TT's strongest kernel; (b) the database is large and query volume high, so "queries/sec/card" and
-"$/query" become the story; (c) the privacy need is already believed.
+PIR fits lookups where the query itself is sensitive and the database is large: password-breach
+checking, private record lookups (for example market data, drug interactions or genomic markers), and
+private retrieval for AI. In each, the hot loop is the initial-dimension scan.
 
-**The two front-runners are the pure-lookup cases** (breach check, finance/healthcare) — chosen over
-private RAG because they are airtight end-to-end: the retrieved answer goes straight back to the
-client and stops, with no downstream model to re-introduce a trust boundary. (Private RAG only stays
-private if the model runs on the client / on-prem or under confidential inference — PIR covers the
-*retrieval* layer only, so it is a careful, architecture-dependent pitch, not a clean one-liner.)
+Each becomes an **index search** through a *public, client-side* key→index map (the map leaks nothing —
+PIR hides *which* index, not the map): a breach check uses a **public hash → bucket**; a record lookup
+uses a **public directory → row number**. A breach list is public and identity-free (it records *which*
+password strings are compromised, not *whose*), so a bucket of neighboring hashes reveals no secret —
+public breach-check services already work this way, and PIR additionally hides the query. For
+sensitive, identity-linked databases use size-1 buckets (cuckoo hashing) or per-record encryption so
+only your own item is recoverable.
 
-Both lookups become an **index search** through a *public, client-side* key→index map (so the map
-leaks nothing — PIR hides *which* index, not the map): breach uses a **public hash → bucket**;
-finance/health uses a **public directory → row number**. The breach list is public and identity-free
-(it records *which* password strings are compromised, not *whose*), so a bucket of neighboring hashes
-reveals no secret — this is already how the HIBP API works, and PIR only strengthens it by hiding the
-query too. For sensitive/identity-linked databases you'd instead use size-1 buckets (cuckoo hashing)
-or per-record encryption so only your own item is recoverable.
-
-### 6.1 Plain-language stories (for a non-technical / investor audience)
-
-**Story 1 — "The check that keeps your secret" (breach / password checking).**
-*Hook: everyone's passwords have leaked — but the tool that warns you shouldn't have to see your
-password to do it.*
-Sarah logs into her bank and sees *"This password appeared in a data breach — change it."* Useful.
-But to produce that warning, something compared her password against a giant list of billions of
-stolen passwords held by a company — so she just handed her live password to a third party to be
-told it's unsafe. Today the industry uses half-measures (send part of the password, or just trust the
-company not to peek); neither is real privacy, and each is one breach away from a scandal.
-**What we do:** her phone asks *"is my exact password on the stolen list — yes or no?"* and gets the
-right answer, while the company learns **nothing** — not her password, not a hint. Picture a sealed
-machine that checks your key against every lock in a warehouse, answers only *"match / no match,"* and
-instantly forgets you were there. It searches the whole warehouse every time (that's what keeps your
-key hidden) but comes away blind.
-**Why it's a business / why TT:** banks, browsers, phone makers and password managers run these checks
-*billions of times a day* and are on the hook when they leak. The only reason they don't do it the
-fully-private way is **cost** — sweeping the whole list on every check is expensive. Tenstorrent is
-the engine that makes that sweep cheap and fast, so private checking becomes affordable at internet
-scale. The bigger the list and the more users, the more engines they buy.
-
-**Story 2 — "When the question is the secret" (finance / healthcare lookup).**
-*Hook: sometimes just asking the question gives away the answer — we let you ask without telling.*
-A hedge-fund analyst pulls a company's data from a market-data vendor. The mere fact that the fund is
-researching *Company X* is worth a fortune — if the vendor sees the queries, that interest leaks or
-gets front-run, and the edge is gone before they can trade. Funds pay huge sums for data and still
-bleed their most valuable secret: what they're curious about. Same shape in medicine — a doctor
-checking a rare drug combination or a genetic marker reveals the patient's condition to the database
-operator the instant she types it, a privacy violation and often illegal. The *question itself* is
-protected.
-**What we do:** the analyst pulls exactly what they need and the doctor gets her answer, while the
-database operator learns **nothing** about what was looked up. Same sealed-machine idea: it fetches
-your one item out of millions, hands it back, and never knows what you took.
-**Why it's a business / why TT:** high-stakes, high-margin customers — funds protecting their edge,
-hospitals and insurers under strict privacy law — who pay a premium per query and are increasingly
-*required* by regulators to guarantee it. Privacy again means searching the whole vault per question
-(expensive), and TT makes it affordable — turning "too costly to offer" into a product. Fewer, richer
-customers than the password case; each pays a lot.
-
-**The tie-together line (for the close):** *"To keep your question private, the server must search
-its entire database every single time — that's the unavoidable cost of privacy, and it's exactly the
-work Tenstorrent's chips do best. The bigger the database and the more questions asked, the more
-engines you need — and it scales in a straight line: 10× the data, 10× the chips. We're not selling a
-feature; we're selling the engine that makes private lookups cheap enough to finally deploy."*
-
-### 6.2 中文版（面向非技术投资人）
-
-**故事一 —「守住你秘密的那次核对」（密码泄露核查）**
-*一句话钩子：每个人的密码都可能已经泄露；可是，帮你检查的工具，根本不该看到你的密码。*
-想象 Sarah 登录网上银行，屏幕弹出一句提示：「该密码曾出现在数据泄露事件中，请尽快更换。」——这确实有用。
-但仔细想想刚才发生了什么：为了给出这句提示，某个系统把 Sarah 的密码拿去和一份包含数十亿个被盗密码的巨型名单做了
-比对，而这份名单握在某家公司手里。也就是说，为了被告知「你的密码不安全」，她刚刚把自己正在使用的密码交给了第三方。
-今天行业里的做法都是折中方案——只上传密码的一部分，或者干脆信任那家公司「不会偷看」——两者都算不上真正的隐私，
-而且只要发生一次泄露或出现一个内鬼，就是一场丑闻。
-**我们做的事：** Sarah 的手机可以直接问「我这个确切的密码在不在被盗名单里——是或否？」并得到正确答案，而持有名单
-的公司却什么都学不到——既不知道她的密码，也得不到任何线索。可以把它想象成一台密封的机器：它拿你的钥匙去和仓库里
-的每一把锁比对，只回答「匹配／不匹配」，然后立刻忘掉你来过。它每次都会把整个仓库搜一遍（正是这样才能藏住你的钥匙），
-但搜完之后一无所知。
-**为什么是门生意 / 为什么是 TT：** 银行、浏览器、手机厂商、密码管理器每天都要做数十亿次这样的核查，一旦泄露就要
-承担法律与声誉责任。他们至今没有采用「完全隐私」方案的唯一原因就是成本——每次核查都要扫一遍整份名单，太贵了。
-Tenstorrent 正是让这次「扫描」变得又快又便宜的引擎；扫描便宜了，隐私核查才能在整个互联网的规模上负担得起。名单
-越大、用户越多，他们要买的引擎就越多。
-
-**故事二 —「问题本身就是秘密」（金融／医疗隐私查询）**
-*一句话钩子：有时候，光是「提出问题」本身就泄露了答案；我们让你能提问，却不必说出口。*
-想象一位对冲基金分析师，正要从行情数据商那里调取某家公司的资料。这里有个陷阱：「这家基金正在研究 X 公司」这个事实
-本身就价值连城——如果数据商看得到查询记录，这份兴趣就可能泄露、被转卖，甚至被抢先交易，基金的优势在下单之前就蒸发了。
-基金花大价钱买数据，却始终在泄露自己最值钱的秘密：他们在关注什么。医疗领域同理——医生想查一种罕见的药物组合或某个
-基因标记，她一敲下查询，就把患者的病情透露给了数据库运营方，这既是隐私侵犯，在多数地区还违法。问题本身就是受保护
-的信息。
-**我们做的事：** 分析师精确调取他需要的数据，医生得到她要的答案，而数据库运营方对「查了什么」一无所知。还是那台
-密封机器的思路：它从数百万条记录里取出你要的那一条递给你，却始终不知道你拿走了什么。
-**为什么是门生意 / 为什么是 TT：** 这是一批高风险、高毛利的客户——保护交易优势的基金、受严格隐私法约束的医院和
-保险公司——他们愿意为「问题保密」的保证按次付高价，而且监管也越来越要求他们这么做。隐私同样意味着每次提问都要把
-整个数据库搜一遍（很贵），而 TT 让它变得负担得起，把「贵到无法提供」变成一款产品。相比密码那个场景，这里客户更少
-但更有钱，每一个都付得多。
-
-**收尾金句：** 「为了让你的问题保密，服务器每一次都必须把整个数据库搜一遍——这是隐私不可避免的代价，而这恰恰是
-Tenstorrent 芯片最擅长的工作。数据库越大、提问越多，需要的引擎就越多；而且它是线性扩展的：数据多 10 倍，芯片
-就多 10 倍。我们卖的不是一个功能，而是那台让『隐私查询』终于便宜到可以落地的引擎。」
-
-### 6.3 Technical framing (all candidates)
-
-- **Private retrieval for AI (private RAG / vector search)** — *flagship / growth story.* Enterprises
-  want LLMs over sensitive corpora without revealing the prompt or which documents matched. Retrieval
-  over an embedding/document store is a batched modular matmul/NTT — the TT kernel. Strategically
-  ideal for TT: *the same silicon runs the model and its private data layer.* Rides the AI × data-
-  governance investment wave; greenfield category.
-- **Password-breach / private safe-browsing** — *proven-at-scale anchor.* Every browser/OS already
-  does these billions of times a day, today with metadata-leaking k-anonymity or enclaves. Real PIR
-  is strictly better privacy; the only blocker is server cost per query — a pure throughput-and-$/query
-  problem, exactly TT's lever.
-- **Finance / healthcare private lookup** — *high-margin vertical.* Private patent/prior-art search,
-  private market-data or drug-interaction/genomic lookups, where the *query itself* is the sensitive
-  asset. Lower volume, high willingness-to-pay, strong regulatory tailwind.
+For retrieval-augmented generation, PIR covers the *retrieval* layer only: the result stays private
+only if the model runs on the client, on-prem, or under confidential inference.
 
 ---
 
@@ -378,7 +278,7 @@ cards = add database." This is a cleaner scaling story than most HE workloads.
 
 | application | record | records / card (~1 GB) | real-world anchor |
 |---|---|---|---|
-| Breach / password check | ~20 B hash | **~50 M** | Entire HIBP "Pwned Passwords" (~1 B, ~20 GB) → **~20 cards** |
+| Breach / password check | ~20 B hash | **~50 M** | A ~1 B-entry breached-password list (~20 GB) → **~20 cards** |
 | Private RAG / AI retrieval | ~2 KB chunk | **~500 K** | One enterprise's private KB per card; 100 cards → ~50 M chunks |
 | Finance / healthcare lookup | ~5 KB record | **~200 K** | A hospital patient index / patent sub-corpus per card |
 
@@ -458,28 +358,16 @@ scan should run as the int8 matmul at scale.
 
 ---
 
-## 8. Recommended demo target and next build step
+## 8. Next build step
 
-**Lead demo (concrete, undeniable):** password-breach check.
-> *"One card privately serves a ~1 GB shard — ~50 M leaked-password hashes — at roughly one query per
-> second, database resident in DRAM, the server never learning which password was checked. The entire
-> Have-I-Been-Pwned password set (~1 B entries) fits on ~20 cards, and because the scan is a linear
-> sum, throughput scales linearly: 20× the data, 20× the cards, same latency. On Blackhole p150,
-> ~4 GB/card cuts that to a handful of cards."*
-
-Use **private RAG** as the growth story ("one card = one enterprise's private knowledge base, on the
-same silicon that runs the model") and **finance/health** as the high-margin per-query vertical.
-
-**The one thing to build next** (the number the whole case rests on): replace the 4-entry toy DB with
-a real ~1 GB database benchmark —
+Replace the 4-entry toy DB with a real ~1 GB database benchmark —
 1. run the initial dimension through the **int8 modular matmul at n=2048** (the transforms already
    exist on device),
 2. use **fully-packed** plaintext polynomials with real payloads (not constant polys),
-3. report **MB/s, queries/sec/card, and $/query**,
+3. report **MB/s and queries/sec/card**,
 4. demonstrate the **multi-card linear scaling** (shard → partial-accumulate → combine).
 
-That measured per-card throughput is the single figure that converts "PIR runs on TT" into "TT is the
-throughput-per-dollar substrate for private retrieval."
+That measured per-card throughput replaces the §7 projection with a measurement.
 
 ---
 

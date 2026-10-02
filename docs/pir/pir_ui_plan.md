@@ -66,7 +66,7 @@ Events (backend → frontend), streamed, terminated by `result` or `error`:
     {"ev":"accepted","idx":[40000],"q":1,"width_change":false}
     {"ev":"cold","q":5,"est_s":579,"why":"width change clears the workload cache"}
     {"ev":"stage","name":"expand","ms":280.4}
-    {"ev":"result","rows":[{"idx":40000,"text":"40000 Visa - ...","verified":true}],
+    {"ev":"result","rows":[{"idx":40000,"text":"40000 Example Co 00 - ...","verified":true}],
      "timings":{"fold_rgsw":224,"expand":280,"convert":79,"scan":190,"folds":93,"decrypt":72},
      "per_query_ms":289,"scan_per_query_ms":63.3,
      "programs":{"expand":0,"convert":0,"scan":0,"folds":0,"total":0},
@@ -285,7 +285,7 @@ What actually holds:
 
 `GET /api/rows?center=&n=` returns a window of `db65536.txt`; the page shows it in a scrollable panel with
 the current row highlighted, and clicking a row loads it into the query box. The search box accepts either
-a bare number (jumps the viewer to that index) or a substring (`Visa` → clickable hits). Both are labelled
+a bare number (jumps the viewer to that index) or a substring (`Co 15` → clickable hits). Both are labelled
 as *local* lookups over the plaintext file: they never touch the device, and saying so plainly matters —
 a search that looked like part of the protocol would undercut the claim the demo exists to make.
 
@@ -301,7 +301,7 @@ The result now carries a `crypto` block, rendered as five stages:
 | 4 decrypted coefficients | first 16, each < t = 257 — **and the same values as characters** |
 | 5 decoded row | the text |
 
-Stage 4 is the point: `[52, 48, 48, 48, 48, 32, 86, 105, 115, 97, …]` renders as `"40000 Visa - Vis"`.
+Stage 4 is the point: `[52, 48, 48, 48, 48, 32, 69, 120, 97, 109, …]` renders as `"40000 Example Co"`.
 Ciphertext coefficients sit near 2²⁸ and look random; plaintext coefficients are small because they are
 the row's ASCII bytes. The contrast is visible without needing to trust a label.
 

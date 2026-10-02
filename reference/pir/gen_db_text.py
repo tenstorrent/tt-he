@@ -16,21 +16,8 @@ one character (see docs/pir/PIR65536_DEMO.md §0).
 """
 import argparse, random
 
-# well-known companies, cycled so every row names one
-COMPANIES = [
-    "Tenstorrent", "Apple", "Microsoft", "Google", "Amazon", "Meta", "Tesla", "Nvidia", "Intel", "AMD",
-    "IBM", "Oracle", "Samsung", "Sony", "Toyota", "Honda", "Siemens", "Bosch", "Philips", "Nokia",
-    "Ericsson", "Qualcomm", "Broadcom", "Cisco", "Dell", "HP", "Lenovo", "Adobe", "Salesforce", "SAP",
-    "Netflix", "Spotify", "Uber", "Airbnb", "Stripe", "Shopify", "Square", "PayPal", "Visa", "Mastercard",
-    "Goldman Sachs", "JPMorgan", "BlackRock", "Berkshire Hathaway", "Walmart", "Costco", "Target", "IKEA",
-    "Nike", "Adidas", "Boeing", "Airbus", "SpaceX", "Lockheed Martin", "General Electric", "3M",
-    "Johnson & Johnson", "Pfizer", "Moderna", "Roche", "Novartis", "AstraZeneca", "Unilever", "Nestle",
-    "Coca-Cola", "PepsiCo", "McDonalds", "Starbucks", "Disney", "Warner Bros", "Comcast", "Verizon",
-    "AT&T", "Vodafone", "Shell", "BP", "ExxonMobil", "Chevron", "Maersk", "FedEx", "UPS", "DHL",
-    "Volkswagen", "BMW", "Mercedes-Benz", "Ferrari", "Porsche", "Hyundai", "Kia", "Michelin",
-    "TSMC", "ASML", "Applied Materials", "Micron", "Western Digital", "Seagate", "Arm", "Cadence",
-    "Synopsys", "Palantir", "Snowflake", "Databricks", "OpenAI", "Anthropic", "DeepMind", "Cloudflare",
-]
+# fictional company names, cycled so every row names one (no real company is named or described)
+COMPANIES = [f"Example Co {k:02d}" for k in range(100)]
 
 TEMPLATES = [
     "{c} was founded by people who wanted to build something that had not existed before.",

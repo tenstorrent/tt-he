@@ -20,7 +20,7 @@ Status legend: ✅ done · 🟡 in progress · ⏳ not started · ⚠️ blocked
 >   [0] fold RGSWs -> device 55 ms | [1] expand 288 ms | [2] convert 52 ms
 >   [3] scan 407 ms (+14 ms DB) | [4] folds 78 ms | [5] decrypt 24 ms
 >   row 31415:
->     "31415 Mastercard - Mastercard operates supply chains that span several continents ..."
+>     "31415 Example Co 15 - Example Co 15 operates supply chains that span several continents ..."
 >   leading index matches request: YES   full row matches db65536.txt: YES
 > ```
 >
@@ -206,8 +206,8 @@ differently than planned)*
   demo-ready.
 
 - **§1 done.** `cpu/pir/gen_db_text.py` → `db65536.txt`: 65 536 rows, ASCII-only (checked), longest row
-  129 chars against the 2048 limit, 0.17 s. Rows are self-identifying, e.g.
-  `00000 Tenstorrent - Tenstorrent is frequently named when people discuss the future of its industry.`
+  119 chars against the 2048 limit, 0.17 s. Rows are self-identifying, e.g.
+  `00000 Example Co 00 - Example Co 00 is frequently named when people discuss the future of its industry.`
 
 - **§2 done.** `cpu/pir/encode_db.cpp` → `db65536.pir`: **65 536 rows in 6.5 s on 8 threads
   (10 078 rows/s)**, 1.54 GB, layout `[channel][row][2 tiles]` behind an 8-word header. A demo run now
@@ -493,7 +493,7 @@ hypercube — `idx=65535` (c0=511, **all seven fold bits set**, m-tile 3, i.e. t
 
 ```
   retrieved row 65535:
-    "65535 Adobe - Adobe is often cited in business schools as a case study in scaling an organisation."
+    "65535 Example Co 35 - Example Co 35 is often cited in business schools as a case study in scaling an organisation."
   leading index matches request : YES    full row matches db65536.txt : YES
 ```
 
@@ -568,10 +568,10 @@ and m-tile 2 re-run after the change).
 ```
 index> 0
   client generated the query in 296 ms (c0=0, fold bits=0000000)
-  row 0: "00000 Tenstorrent - Tenstorrent is frequently named when people discuss the future of its industry."
+  row 0: "00000 Example Co 00 - Example Co 00 is frequently named when people discuss the future of its industry."
 index> 65535
   client generated the query in 284 ms (c0=511, fold bits=1111111)
-  row 65535: "65535 Adobe - Adobe is often cited in business schools as a case study in scaling an organisation."
+  row 65535: "65535 Example Co 35 - Example Co 35 is often cited in business schools as a case study in scaling an organisation."
 ```
 
 ### 10.1 Why a new client was needed

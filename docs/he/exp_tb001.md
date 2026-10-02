@@ -396,8 +396,7 @@ Open item.
 ### Device timebase — every trace-derived number was 1.35× too high
 
 The CSV column is **`time[cycles since reset]`: device cycles, not nanoseconds.** Cycles tick at
-AICLK, measured by `tt-smi` on this p150 at **800 MHz idle and a sustained 1350 MHz under load**
-(`AICLK_LIMIT_MAX = 0x546` = 1350). Every tool in `tools/traces/` divided by 1000 and called the
+AICLK, measured by `tt-smi` on this p150 at **800 MHz idle and a sustained 1350 MHz under load**. Every tool in `tools/traces/` divided by 1000 and called the
 result microseconds — i.e. assumed 1 GHz — overstating every device-side duration by **1.35×**.
 
 The assumption is not just imprecise, it is provably impossible:

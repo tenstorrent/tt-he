@@ -35,8 +35,8 @@ from dataclasses import dataclass, field
 # --------------------------------------------------------------------------- #
 # the card
 # --------------------------------------------------------------------------- #
-CORES = 130                 # usable Tensix on this p150 (the sheet says 120 after the Jan-2026 fw)
-CLOCK_MHZ = 1350            # sustained AICLK under load (tt-smi AICLK_LIMIT_MAX = 0x546)
+CORES = 130                 # usable Tensix on the p150 these measurements ran on
+CLOCK_MHZ = 1350            # sustained AICLK under load (tt-smi)
 TILE = 32                   # matrix-engine tile edge
 TILE_ELEMS = TILE * TILE    # 1024
 TILE_BYTES = TILE_ELEMS * 4 # int32 tile

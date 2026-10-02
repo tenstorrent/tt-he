@@ -65,6 +65,17 @@ included in this repository.
 
 - Chen and Ren, OnionPIR v2.
   IACR ePrint 2025/1142 — https://eprint.iacr.org/2025/1142
+  Reference implementation: https://github.com/chenyue42/OnionPIRv2
+
+  No source code from the reference implementation is included in this
+  repository. Parameter values and configuration names used in docs/pir/, and
+  in comments in reference/pir/ and kernels/, were taken from its
+  src/includes/database_constants.h (configurations CONFIG_N2048_K1 and
+  CONFIG_N2048_K1_COMP) so that results could be compared on the same
+  parameter set. The reference implementation, and the repositories it is
+  forked from, carry no license. A license was requested from the authors on
+  24 September 2026 (https://github.com/nyoos/OnionPIR/issues/1). None had
+  been granted at the time of publication.
 
 - Lattigo, a lattice-based homomorphic encryption library, consulted as an
   implementation reference for RNS-BFV.

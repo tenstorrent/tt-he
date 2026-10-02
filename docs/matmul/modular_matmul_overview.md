@@ -250,7 +250,6 @@ the int32 tile is the handoff between them.
 - **Algorithm + exact tile/lane layout** validated in numpy:
   `reference/matmul/tt_int8_modular_matmul_32x32.py` (TT-faithful, signed int8 / radix 128) —
   all cases PASS, including the largest 28-bit primes (`268435399`, `167772161`).
-  `reference/matmul/int8_modular_matmul.py` is the more general radix-256 reference.
 - **On device:** `tests/matmul/modular_matmul.cpp` verifies the full 32×32 result element-by-element
   against an exact `__int128` reference, **mismatches = 0 / 1024** across multiple 28-bit primes
   and seeds.
@@ -342,7 +341,6 @@ foundation documented for the vector modmul.
 | What | Where |
 |---|---|
 | TT-faithful oracle (signed int8, radix 128) | `reference/matmul/tt_int8_modular_matmul_32x32.py` |
-| General reference (radix 256) | `reference/matmul/int8_modular_matmul.py` |
 | Host — matmul-only (host decompose/recombine) | `tests/matmul/modular_matmul.cpp` |
 | **Host — fully fused (measured in §10)** | `tests/matmul/fused_modmatmul.cpp` |
 | Fused compute kernel (decompose+matmul+recombine) | `kernels/shared/compute/fused_matmul_a.cpp` |

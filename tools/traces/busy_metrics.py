@@ -16,9 +16,9 @@
 THE DEVICE TIMEBASE — READ THIS BEFORE TRUSTING ANY DEVICE-SIDE NUMBER
 
   The CSV column is "time[cycles since reset]": device CYCLES, not nanoseconds. Cycles tick at AICLK,
-  which on this p150 is 800 MHz idle and boosts to a sustained 1350 MHz under load (tt-smi; the cap
-  AICLK_LIMIT_MAX = 0x546 = 1350). Every tool in this directory used to divide by 1000 and call the
-  result microseconds, i.e. assume 1 GHz, which overstates every device-side duration by 1.35x.
+  which on this p150 is 800 MHz idle and boosts to a sustained 1350 MHz under load (tt-smi). Every
+  tool in this directory used to divide by 1000 and call the result microseconds, i.e. assume 1 GHz,
+  which overstates every device-side duration by 1.35x.
 
   That assumption is not merely imprecise, it is provably wrong: at 1 GHz the host's own stopwatch
   around a blocking segment replay comes out 128 us/call SHORTER than the device work it brackets,

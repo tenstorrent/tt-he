@@ -676,7 +676,7 @@ covered and should be excluded explicitly in the new tree:
 |---|--:|---|
 | `cpu/pir/db65536.fold` | 6.0 GB | `./encode_db ... --fold db65536.fold --rest 128` |
 | `cpu/pir/db65536.pir` | 1.5 GB | `./encode_db db65536.txt db65536.pir` |
-| `cpu/pir/db65536.txt` | 6.5 MB | `python3 gen_db_text.py` |
+| `cpu/pir/db65536.txt` | 7.3 MB | `python3 gen_db_text.py` |
 | `cpu/pir/query*.bin` | 8.7 MB each | `python3 gen_query65536.py --idx N` |
 | `cpu/pir/*.bin` (goldens) | ~35 MB | the matching `gen_*_case.py` |
 | `cpu/pir/encode_db`, `cpu/pir/test_client` | binaries | rebuild |

@@ -92,7 +92,7 @@ query_expand,pir_answer}2048`, `test_scan_mc`. Goldens: `reference/pir/gen_*_cas
 
 ## 2. Database shape (128 MB → hypercube)
 
-Following `utils::calculate_db_shape` (`OnionPIRv2/src/utils.cpp:345`):
+Following `utils::calculate_db_shape` (OnionPIRv2 `src/utils.cpp`, line 368 at commit `1676dd7`):
 
 ```
 usable bits/coeff = PlainMod − 1        = 13
