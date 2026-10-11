@@ -11,7 +11,7 @@ By participating you agree to abide by our [Code of Conduct](CODE_OF_CONDUCT.md)
 
 Open a **GitHub Issue**. The most useful reports include:
 
-- what you ran (the exact command — `./build/vector_modmul`, `sh tests/run_all.sh`, …),
+- what you ran (the exact command — `./build/vector_modmul`, `sh tools/run_all.sh`, …),
 - your hardware (Blackhole p150, Wormhole n150) and your tt-metalium version,
 - the output, including the mismatch count if a validation check failed,
 - what you expected instead.
@@ -53,7 +53,7 @@ faster" is not a result on its own; "it's faster and still `0/114688`" is.
 ### 2. Tests pass
 
 ```bash
-sh tests/run_all.sh                         # device suite
+sh tools/run_all.sh                         # device suite
 ctest --test-dir build -L '^nohw$'          # host-only, no hardware needed
 ```
 
